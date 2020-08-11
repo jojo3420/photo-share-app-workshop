@@ -1,55 +1,56 @@
-#scalar DateTime
+"""
+ type 유저
+"""
+type User {
+  """github username """
+  githubLogin: ID!
+  """ username """
+  name: String
+  """ github profile(image) url """
+  avatar: String
+  """ 내가 작성한 Photos """
+  postedPhotos: [Photo!]!
+  """ 내가 태그에 들어간 Photo 목록: N:N """
+  inPhotos: [Photo!]!
+}
 #
-#
-#"""
-#  사용자
-#"""
-#type User {
-#  """github author id """
-#  githubAuth: ID!
-#  """ username """
-#  name: String
-#  """ github profile(image) url """
-#  profileURL: String
-#  """ 내가 작성한 Photos """
-#  postedPhotos: [Photo!]!
-#  """ 내가 태그에 들어간 Photo 목록: N:N """
-#  inPhotoes: [Photo!]!
-#}
-#
-#""" 사용자가 등록한 Photo """
-#type Photo {
-#  """ photo title """
-#  title: String!
-#  """ photo image url """
-#  url: String!
-#  """ 작성자 """
-#  author: User!
-#  """ 사진의 태그 된 사용자 목록 N:N """
-#  taggedUsers: [User!]!
-#  """ 사진 설명 """
-#  descriptoin: String
-#  """ 사진 카테고리 """
-#  category: PhotoCategory
-#  """ 작성일 """
-#  created: DateTime!
-#
-#}
-#""" Photo Category 값 제약 """
-#enum PhotoCategory {
-#  """ 사람 """
-#  PEOPLE
-#  """ 동물 """
-#  ANIMAL
-#  """ 어린이 """
-#  KIDS
-#  """ 자연 """
-#  NATURE
-#  """ 물건 """
-#  STUFF
-#  """ 기타 """
-#  OTHER # 기타
-#}
+""" 사용자가 등록한 Photo """
+type Photo {
+  """ 포토 식별자 """
+  id: ID!
+  """ photo title """
+  title: String!
+  """ photo image url """
+  url: String!
+  """ 작성자 """
+  postedBy: User!
+  """ 사진의 태그 된 사용자 목록 N:N """
+  taggedUsers: [User!]!
+  """ 사진 설명 """
+  descriptoin: String
+  """ 사진 카테고리 """
+  category: PhotoCategory
+  """ 작성일 """
+  created: DateTime!
+
+}
+""" Photo Category 필드 값 후보 정의 """
+enum PhotoCategory {
+  """ 셀카 """
+  SELFIE
+
+  """ 초상화 """
+  PORTRAIT
+
+  """ 작업 """
+  ACTION
+
+  """ 풍경 """
+  LANDSCAPE
+
+  """ 그래픽 """
+  GRAPHIC
+}
 #
 #
 #""" 정렬방식 enum """
@@ -60,16 +61,18 @@
 #  DESC
 #}
 #
-#""" 포토 추가시 사용할 input """
-#input PostPhotoInput {
-#  """ (필수) 포토 제목 """
-#  title: String!
-#  """ (옵션) 포토 설명 """
-#  description: String
-#  """ (옵션) 포토 카테고리 - default: OTHER """
-#  category: PhotoCategory = OTHER
-#
-#}
+
+
+""" 포토 추가시 사용할 input """
+input PostPhotoInput {
+  """ (필수) 포토 제목 """
+  title: String!
+  """ (옵션) 포토 설명 """
+  description: String
+  """ (옵션) 포토 카테고리 - default: OTHER """
+  category: PhotoCategory = OTHER
+
+}
 #
 #"""" 페이지네이션 옵션 필드  """
 #input PageNationInput {
@@ -88,26 +91,28 @@
 #}
 #
 #
-#type Query {
-#  """ Total users count """
-#  totalUsers: Int!
-#
-#  """ Get users by condition """
-#  allUsers: [User!]!
-#
-#  """ Total photos count """
-#  totalPhotos: Int!
-#
-#  """ get photos by condition """
-#  allPhotos: [Photo!]!
-#}
-#
-#type Mutation {
-#  """ new Photo
-#    postPhoto: title, description, category
-#  """
-#  postPhoto(input: PostPhotoInput): Photo!
-#}
-#
 
+""" 사용자 정의 스칼라 타입 정의 - 날짜 시간 """
+scalar DateTime
+
+type Query {
+  """ Total users count """
+  totalUsers: Int!
+
+  """ Get users by condition """
+  allUsers: [User!]!
+
+  """ Total photos count """
+  totalPhotos: Int!
+
+  """ get photos by condition """
+  allPhotos: [Photo!]!
+}
+
+type Mutation {
+  """ create Photo
+    postPhoto: title, description, category
+  """
+  postPhoto(input: PostPhotoInput): Photo!
+}
 

@@ -2,7 +2,7 @@ const { GraphQLScalarType } = require('graphql');
 const { photos, tags, users } = require('./db');
 
 
-let _id = 4;
+let _id = 5;
 
 const resolvers = {
   Query: {
@@ -23,9 +23,9 @@ const resolvers = {
         created: new Date(),
         githubUser: 'jojo' // @TODO: 작성자 임시로 하드 코딩
       };
-      console.log({ photo })
+      // console.log({ photo })
       photos.push(photo);
-      _id++;
+      _id = _id + 1;
       return photo;
     },
   },
