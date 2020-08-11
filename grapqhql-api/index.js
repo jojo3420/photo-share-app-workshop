@@ -3,7 +3,7 @@ const { ApolloServer } = require('apollo-server-express');
 const { MongoClient } = require('mongodb');
 const expressPlayground = require('graphql-playground-middleware-express')
   .default;
-const resolvers = require('./resolvers/resolvers');
+const resolvers = require('./resolvers/index');
 const { readFileSync } = require('fs');
 
 // env
@@ -20,6 +20,7 @@ async function run() {
   try {
     const client = await MongoClient.connect(MONGO_DB, {
       useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     db = client.db();
   } catch (e) {
