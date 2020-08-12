@@ -3,7 +3,7 @@ const Query = {
     return db.collection('users').estimatedDocumentCount();
   },
   totalPhotos: (parent, props, { db }) => {
-    return db.collection('users').estimatedDocumentCount();
+    return db.collection('photos').estimatedDocumentCount();
   },
   allUsers: (_, props, { db }) => {
     return db.collection('users').find().toArray();
