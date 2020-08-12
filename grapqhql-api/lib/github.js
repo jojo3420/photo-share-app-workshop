@@ -31,6 +31,12 @@ async function authorizeWithGithub(credentials) {
   throw new Error('access_token is null');
 }
 
+const generateFakeUsers = (count) =>
+  fetch(`https://randomuser.me/api/?results=${count}`).then((res) =>
+    res.json(),
+  );
+
 module.exports = {
   authorizeWithGithub,
+  generateFakeUsers,
 };

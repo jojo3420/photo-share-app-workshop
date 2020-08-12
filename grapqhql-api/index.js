@@ -32,12 +32,25 @@ async function run() {
     `);
   }
 
-  const context = { db };
+  // const context = { db };
 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context,
+    context: async (expressContext) => {
+      // all request called..
+      const { req } = expressContext;
+      const { token: githubToken } = req.headers;
+      const user = await db.collection('users').findOne({
+        githubToken,
+      });
+
+      // return  context
+      return {
+        db,
+        user,
+      };
+    },
   });
 
   // apply express
@@ -49,7 +62,7 @@ async function run() {
   // home
   app.get('/', (req, res) => {
     let url = `https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=user`;
-    res.end(`<a href="${url}">Sign In with Github</a>`);
+    res.end(`<a href="${url}">Sign In with Github and get code</a>`);
   });
 
   app.listen({ port: 4000 }, (err) => {

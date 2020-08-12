@@ -12,6 +12,7 @@ const Query = {
   allPhotos: (_, props, { db }) => {
     return db.collection('photos').find().toArray();
   },
+  me: (_, props, { user }) => user,
 };
 
 module.exports = Query;
